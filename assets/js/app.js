@@ -75,17 +75,19 @@ function updateToolTip(chosenxAxis, circlesGroup) {
     var label;
   
     if (chosenxAxis === "age") {
-      label = "age, % of smokers:";
+      label1 = "state:";
+      label2 = "age:";
+      label3 = "% of smokers:";
     }
     else {
       label = "smokes:";
     }
   
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
+      .attr("class", "d3-tip")
       .offset([80, -60])
       .html(function(d) {
-        return (`${d.age}<br>${label} ${d[chosenxAxis]}, ${d.smokes}<br>${label} ${d[yAxis]} `);
+        return (`${label1} ${d.state} <br> ${label2} ${d.age} <br> ${label3} ${d.smokes}`);
       });
   
     circlesGroup.call(toolTip);
@@ -114,6 +116,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     censusData.forEach(function(data) {
       data.age = +data.age;
       data.smokes = +data.smokes;
+      data.abbr = +data.abbr;
     });
   
     // xLinearScale function above csv import
@@ -144,11 +147,16 @@ var circlesGroup = chartGroup.selectAll("circle")
     .data(censusData)
     .enter()
     .append("circle")
+    .classed('stateCircle',true)
     .attr("cx", d => xLinearScale(d[chosenxAxis]))
     .attr("cy", d => yLinearScale(d.smokes))
+    .text(d => d.abbr)
+    .attr('font-size','8px')
     .attr("r", 10)
     .attr("fill", "pink")
     .attr("opacity", ".6");
+
+
 
 // Create group for two x-axis labels
 var labelsGroup = chartGroup.append("g")
