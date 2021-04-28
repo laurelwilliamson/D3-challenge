@@ -75,7 +75,7 @@ function updateToolTip(chosenxAxis, circlesGroup) {
     var label;
   
     if (chosenxAxis === "age") {
-      label = "age:";
+      label = "age, % of smokers:";
     }
     else {
       label = "smokes:";
@@ -85,7 +85,7 @@ function updateToolTip(chosenxAxis, circlesGroup) {
       .attr("class", "tooltip")
       .offset([80, -60])
       .html(function(d) {
-        return (`${d.age}<br>${label} ${d[chosenxAxis]}`);
+        return (`${d.age}<br>${label} ${d[chosenxAxis]}, ${d.smokes}<br>${label} ${d[yAxis]} `);
       });
   
     circlesGroup.call(toolTip);
